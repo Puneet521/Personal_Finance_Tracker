@@ -15,8 +15,18 @@ app.use(express.json());
 const authLimiter = rateLimit({ windowMs: 15*60*1000, max: 5 });
 app.use('/api/auth', authLimiter);
 
-// Test route
+// Routes
+const authRoutes = require('./routes/authroute.js');
+app.use('/api/auth', authRoutes);
+
+// Test route for auth 
+const authtestRoutes = require('./routes/authtestroute.js');
+app.use('/api/test', authtestRoutes);
+
+// Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
+
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
