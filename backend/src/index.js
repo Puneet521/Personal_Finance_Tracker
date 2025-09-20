@@ -23,6 +23,10 @@ app.use('/api/auth', authRoutes);
 const authtestRoutes = require('./routes/authtestroute.js');
 app.use('/api/test', authtestRoutes);
 
+const transactionRoutes = require('./routes/transactionroute.js');
+app.use('/api/transactions', transactionRoutes);
+
+
 // Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
 
