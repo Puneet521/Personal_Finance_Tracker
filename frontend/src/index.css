@@ -1,5 +1,51 @@
+:root {
+  --bg: #f6f8fb;
+  --card: #fff;
+  --accent: #4facfe;
+  --muted: #6c757d;
+}
+
+* { box-sizing: border-box; }
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #222;
+}
+
+/* Nav */
+.app-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 20px; background:#0b2545; color:white;
+}
+.app-nav .brand { font-weight:700; margin-right:16px; font-size:16px; }
+.app-nav a { color: rgba(255,255,255,0.9); margin-right:12px; text-decoration:none; }
+.app-nav a:hover { text-decoration:underline; }
+.nav-right { display:flex; gap:10px; align-items:center; }
+.role-tag { background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px; font-size:13px; }
+.btn-logout { background:#ff6b6b; color:white; border:none; padding:8px 10px; border-radius:6px; cursor:pointer; }
+
+/* Layout */
+.container { padding:20px; max-width:1100px; margin:20px auto; }
+
+/* Card style for list items and analytics */
+.card { background: var(--card); padding:14px; border-radius:10px; box-shadow: 0 4px 12px rgba(12,20,30,0.05); }
+.grid-analytics { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card.full { grid-column: 1 / -1; }
+
+/* Forms */
+.form-row { display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+.form-row input, .form-row select { padding:10px; border-radius:8px; border:1px solid #e6e6e6; }
+
+/* Transaction list */
+.transaction-item { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:12px; margin-bottom:10px; background:var(--card); border-radius:8px; box-shadow:0 4px 8px rgba(20,30,50,0.04); }
+.transaction-item small { color:var(--muted); }
+
+/* Buttons */
+button { cursor:pointer; }
+button[disabled] { opacity:0.6; cursor:not-allowed; }
+
+/* responsiveness */
+@media (max-width: 800px) {
+  .grid-analytics { grid-template-columns: 1fr; }
+  .form-row { flex-direction:column; align-items:stretch; }
 }

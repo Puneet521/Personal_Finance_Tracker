@@ -1,19 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Login from './pages/login';
-import Dashboard from './pages/Dashboard';
-import Transactions from './pages/Transactions';
-import Navbar from './components/NavBar';
-import ProtectedRoute from './routes/ProtectedRoutes';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import NavBar from "./components/NavBar";
+import Login from "./pages/login";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import NotFound from "./pages/NotFound";
+
+function PrivateRoute({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/" replace />;
+}
 
 function AppContent() {
+  const { user } = useAuth();
   return (
     <>
-      <Navbar />
+      {user && <NavBar />}
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
