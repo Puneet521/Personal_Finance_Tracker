@@ -11,3 +11,4 @@ router.get('/categories', verifyToken, authorizeRoles('admin', 'user', 'read-onl
 router.get('/trends', verifyToken, authorizeRoles('admin', 'user', 'read-only'), getIncomeExpenseTrends);
 
 module.exports = router;
+
