@@ -15,7 +15,7 @@ app.use(express.json());
 const authLimiter = rateLimit({ windowMs: 15*60*1000, max: 5 });
 app.use('/api/auth', authLimiter);
 
-// Routes
+// Auth Routes
 const authRoutes = require('./routes/authroute.js');
 app.use('/api/auth', authRoutes);
 
@@ -23,9 +23,13 @@ app.use('/api/auth', authRoutes);
 const authtestRoutes = require('./routes/authtestroute.js');
 app.use('/api/test', authtestRoutes);
 
+// Transaction Route
 const transactionRoutes = require('./routes/transactionroute.js');
 app.use('/api/transactions', transactionRoutes);
 
+// Search Route
+const searchRoutes = require('./routes/searchroute.js');
+app.use('/api/search', searchRoutes);
 
 // Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
