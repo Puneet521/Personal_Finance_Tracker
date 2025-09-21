@@ -38,6 +38,10 @@ app.use('/api/search', searchLimiter, searchRoutes);
 const analyticsRoutes = require('./routes/analyticsroute.js');
 app.use('/api/analytics', analyticsLimiter, analyticsRoutes);
 
+// Category Route
+const categoryRoutes = require('./routes/categoryroute.js');
+app.use('/api/categories', categoryRoutes);
+
 // Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
 

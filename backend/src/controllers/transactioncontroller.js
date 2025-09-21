@@ -1,4 +1,5 @@
 const pool = require('../db/postgres');
+const { clearAnalyticsCache } = require('../middleware/cachemiddleware'); 
 
 // Create transaction (Admin & User)
 async function createTransaction(req, res) {
@@ -15,6 +16,10 @@ async function createTransaction(req, res) {
        VALUES ($1, $2, $3, $4) RETURNING *`,
       [user_id, amount, type, category_id]
     );
+
+    // ✅ Clear analytics cache so dashboard refreshes
+    await clearAnalyticsCache();
+
     res.status(201).json({ transaction: result.rows[0] });
   } catch (err) {
     console.error(err);
@@ -68,9 +73,19 @@ async function updateTransaction(req, res) {
     }
 
     const result = await pool.query(
-      `UPDATE transactions SET amount=$1, type=$2, category_id=$3 WHERE id=$4 RETURNING *`,
-      [amount || transaction.amount, type || transaction.type, category_id || transaction.category_id, transaction_id]
+      `UPDATE transactions 
+       SET amount=$1, type=$2, category_id=$3 
+       WHERE id=$4 RETURNING *`,
+      [
+        amount || transaction.amount,
+        type || transaction.type,
+        category_id || transaction.category_id,
+        transaction_id,
+      ]
     );
+
+    // ✅ Clear analytics cache
+    await clearAnalyticsCache();
 
     res.json({ transaction: result.rows[0] });
   } catch (err) {
@@ -95,6 +110,10 @@ async function deleteTransaction(req, res) {
     }
 
     await pool.query('DELETE FROM transactions WHERE id=$1', [transaction_id]);
+
+    // ✅ Clear analytics cache
+    await clearAnalyticsCache();
+
     res.json({ message: 'Transaction deleted successfully' });
   } catch (err) {
     console.error(err);
@@ -102,4 +121,5 @@ async function deleteTransaction(req, res) {
   }
 }
 
-module.exports = { createTransaction, getAllTransactions, getUserTransactions, updateTransaction, deleteTransaction, };
+module.exports = { createTransaction, getAllTransactions, getUserTransactions, updateTransaction, deleteTransaction };
+

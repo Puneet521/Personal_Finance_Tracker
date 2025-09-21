@@ -20,4 +20,21 @@ async function setCache(key, value, ttl) {
   }
 }
 
-module.exports = { getCache, setCache };
+//  Clear analytics cache keys after transaction changes
+async function clearAnalyticsCache() {
+  try {
+    const keys = await redisClient.keys('monthly_*');
+    const catKeys = await redisClient.keys('category_*');
+    const trendKeys = await redisClient.keys('trends_*');
+
+    const allKeys = [...keys, ...catKeys, ...trendKeys];
+    if (allKeys.length > 0) {
+      await redisClient.del(allKeys);
+      console.log('🗑️ Cleared analytics cache:', allKeys);
+    }
+  } catch (err) {
+    console.error('Redis clear cache error:', err);
+  }
+}
+
+module.exports = { getCache, setCache, clearAnalyticsCache };
