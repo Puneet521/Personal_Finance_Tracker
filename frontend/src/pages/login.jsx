@@ -10,34 +10,62 @@ export default function Login() {
 
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
     try {
-      const res = await api.post("/auth/login", form);
-      // backend: { token, user }
+      const res = await api.post("/auth/login", form); 
+      // Backend returns { token, user }
       login(res.data.token, res.data.user);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid username or password");
+      if (err.response) {
+        // Backend sends proper messages (rate limit, invalid credentials, etc.)
+        setError(err.response.data.message || "Login failed");
+      } else {
+        setError("Network error. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
       <form className="login-card" onSubmit={submit} autoComplete="off">
-        <h1>Personal Finance Tracker</h1>
+        <h1 className="title">Personal Finance Tracker</h1>
         <p className="subtitle">Sign in to continue</p>
+
         {error && <div className="error">{error}</div>}
 
-        <label>Username</label>
-        <input name="username" value={form.username} onChange={(e)=>setForm({...form, username:e.target.value})} placeholder="Username" required />
+        <label htmlFor="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          value={form.username}
+          onChange={(e) => setForm({ ...form, username: e.target.value })}
+          placeholder="Enter your username"
+          required
+        />
 
-        <label>Password</label>
-        <input type="password" name="password" value={form.password} onChange={(e)=>setForm({...form, password:e.target.value})} placeholder="Password" required />
+        <label htmlFor="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          placeholder="Enter your password"
+          required
+        />
 
-        <button type="submit" className="btn-login">Login</button>
+        <button type="submit" className="btn-login" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );

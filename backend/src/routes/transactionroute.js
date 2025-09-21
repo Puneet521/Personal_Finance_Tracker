@@ -1,3 +1,75 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Transactions
+ *   description: Manage income & expense transactions
+ */
+
+/**
+ * @swagger
+ * /transactions:
+ *   post:
+ *     summary: Create a new transaction (Admin & User)
+ *     tags: [Transactions]
+ *     responses:
+ *       201:
+ *         description: Transaction created
+ */
+
+/**
+ * @swagger
+ * /transactions:
+ *   get:
+ *     summary: Get all transactions (Admin only)
+ *     tags: [Transactions]
+ *     responses:
+ *       200:
+ *         description: List of all transactions
+ */
+
+/**
+ * @swagger
+ * /transactions/my:
+ *   get:
+ *     summary: Get logged-in user’s transactions
+ *     tags: [Transactions]
+ *     responses:
+ *       200:
+ *         description: List of user’s transactions
+ */
+
+/**
+ * @swagger
+ * /transactions/{id}:
+ *   put:
+ *     summary: Update a transaction
+ *     tags: [Transactions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Transaction updated
+ *
+ *   delete:
+ *     summary: Delete a transaction
+ *     tags: [Transactions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Transaction deleted
+ */
+
+
+
 const express = require('express');
 const router = express.Router();
 const { verifyToken, authorizeRoles } = require('../middleware/authmiddleware');

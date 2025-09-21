@@ -42,8 +42,19 @@ app.use('/api/analytics', analyticsLimiter, analyticsRoutes);
 const categoryRoutes = require('./routes/categoryroute.js');
 app.use('/api/categories', categoryRoutes);
 
+//User Route
+const userRoutes = require('./routes/userroutes.js');
+app.use('/api/users', userRoutes);
+
+
 // Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
+
+
+// Swagger
+const swaggerDocs = require("./swagger");
+swaggerDocs(app);
+
 
 // Start server
 const PORT = process.env.PORT || 5000;

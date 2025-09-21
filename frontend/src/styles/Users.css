@@ -1,0 +1,62 @@
+/* frontend/src/styles/Users.css */
+.users-page {
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.user-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.user-form input,
+.user-form select,
+.user-form button {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.user-form button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.user-form button:hover {
+  background: #0056b3;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.user-table th {
+  background: #f4f4f4;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #a71d2a;
+}

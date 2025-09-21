@@ -1,38 +1,30 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import NavBar from "./components/NavBar";
-import Login from "./pages/login";
-import Dashboard from "./pages/Dashboard";
-import Transactions from "./pages/Transactions";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/NavBar';
+import React, { Suspense, lazy } from 'react';
 
-function PrivateRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/" replace />;
-}
-
-function AppContent() {
-  const { user } = useAuth();
-  return (
-    <>
-      {user && <NavBar />}
-      <Routes>
-        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/transactions" element={<PrivateRoute><Transactions /></PrivateRoute>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
-  );
-}
+const Login = lazy(() => import('./pages/login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Transactions = lazy(() => import('./pages/Transactions'));
+const Users = lazy(() => import('./pages/Users'));
+const Categories = lazy(() => import('./pages/categories'));
 
 export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <AppContent />
+        <Navbar />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/categories" element={<Categories />} />
+          </Routes>
+        </Suspense>
       </Router>
     </AuthProvider>
   );
 }
+

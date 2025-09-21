@@ -37,4 +37,5 @@ async function clearAnalyticsCache() {
   }
 }
 
-module.exports = { getCache, setCache, clearAnalyticsCache };
+
+module.exports = { getCache, setCache, clearAnalyticsCache};

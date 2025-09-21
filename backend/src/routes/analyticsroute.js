@@ -1,3 +1,45 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Analytics
+ *   description: Financial analytics & reports
+ */
+
+/**
+ * @swagger
+ * /analytics/monthly:
+ *   get:
+ *     summary: Get monthly income vs expense overview
+ *     tags: [Analytics]
+ *     responses:
+ *       200:
+ *         description: Monthly overview
+ */
+
+/**
+ * @swagger
+ * /analytics/categories:
+ *   get:
+ *     summary: Get category-wise expense breakdown
+ *     tags: [Analytics]
+ *     responses:
+ *       200:
+ *         description: Category breakdown
+ */
+
+/**
+ * @swagger
+ * /analytics/trends:
+ *   get:
+ *     summary: Get income vs expense trends
+ *     tags: [Analytics]
+ *     responses:
+ *       200:
+ *         description: Trends data
+ */
+
+
 const express = require('express');
 const router = express.Router();
 const { verifyToken, authorizeRoles } = require('../middleware/authmiddleware');

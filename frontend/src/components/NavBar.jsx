@@ -19,8 +19,10 @@ export default function NavBar() {
         <span className="brand">Personal Finance Tracker</span>
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/transactions">Transactions</Link>
+         {user.role === "admin" && (
+        <Link to="/users" style={{ margin: "0 10px", color: "#fff" }}>User Management</Link>
+      )}
       </div>
-
       <div className="nav-right">
         <span className="role-tag">{user.role}</span>
         <button className="btn-logout" onClick={handleLogout}>Logout</button>

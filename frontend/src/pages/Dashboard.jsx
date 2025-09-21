@@ -13,9 +13,18 @@ import {
   Legend
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Tooltip,
+  Legend
+);
 
-export default function Dashboard(){
+export default function Dashboard() {
   const [monthly, setMonthly] = useState([]);
   const [categories, setCategories] = useState([]);
   const [trends, setTrends] = useState([]);
@@ -23,41 +32,95 @@ export default function Dashboard(){
 
   const fetchAll = async () => {
     setLoading(true);
-    try{
+    try {
       const [m, c, t] = await Promise.all([
-        api.get('/analytics/monthly'),
-        api.get('/analytics/categories'),
-        api.get('/analytics/trends')
+        api.get("/analytics/monthly"),
+        api.get("/analytics/categories"),
+        api.get("/analytics/trends")
       ]);
       setMonthly(m.data.monthlyOverview || []);
       setCategories(c.data.categoryBreakdown || []);
       setTrends(t.data.trends || []);
-    }catch(err){ console.error(err); }
-    finally{ setLoading(false); }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(()=>{ fetchAll(); }, []);
+  useEffect(() => {
+    fetchAll();
+  }, []);
 
-  const pieData = useMemo(()=>({
-    labels: categories.map(c => c.category),
-    datasets: [{ data: categories.map(c => Number(c.total) || 0), backgroundColor: categories.map((_,i)=>`hsl(${i*40%360} 70% 50%)`) }]
-  }), [categories]);
+  // Pie chart (category breakdown)
+  const pieData = useMemo(
+    () => ({
+      labels: categories.map((c) => c.category),
+      datasets: [
+        {
+          data: categories.map((c) => Number(c.total) || 0),
+          backgroundColor: categories.map(
+            (_, i) => `hsl(${(i * 60) % 360}, 70%, 50%)`
+          )
+        }
+      ]
+    }),
+    [categories]
+  );
 
-  const lineData = useMemo(()=>({
-    labels: monthly.map(m => new Date(m.month).toLocaleString('default',{month:'short',year:'numeric'})).reverse(),
-    datasets: [
-      { label: 'Income', data: monthly.map(m=>Number(m.total_income||0)).reverse(), tension:0.3 },
-      { label: 'Expense', data: monthly.map(m=>Number(m.total_expense||0)).reverse(), tension:0.3 }
-    ]
-  }), [monthly]);
+  // Line chart (monthly overview)
+  const lineData = useMemo(
+    () => ({
+      labels: monthly.map((m) =>
+        new Date(m.month).toLocaleString("default", {
+          month: "short",
+          year: "numeric"
+        })
+      ).reverse(),
+      datasets: [
+        {
+          label: "Income",
+          data: monthly.map((m) => Number(m.total_income || 0)).reverse(),
+          borderColor: "green",
+          backgroundColor: "rgba(0, 128, 0, 0.3)",
+          tension: 0.3
+        },
+        {
+          label: "Expense",
+          data: monthly.map((m) => Number(m.total_expense || 0)).reverse(),
+          borderColor: "red",
+          backgroundColor: "rgba(255, 0, 0, 0.3)",
+          tension: 0.3
+        }
+      ]
+    }),
+    [monthly]
+  );
 
-  const barData = useMemo(()=>({
-    labels: trends.map(t=> new Date(t.month).toLocaleString('default',{month:'short',year:'numeric'}) ),
-    datasets: [
-      { label: 'Income', data: trends.map(t=>Number(t.income||0)) },
-      { label: 'Expense', data: trends.map(t=>Number(t.expense||0)) }
-    ]
-  }), [trends]);
+  // Bar chart (trends)
+  const barData = useMemo(
+    () => ({
+      labels: trends.map((t) =>
+        new Date(t.month).toLocaleString("default", {
+          month: "short",
+          year: "numeric"
+        })
+      ),
+      datasets: [
+        {
+          label: "Income",
+          data: trends.map((t) => Number(t.income || 0)),
+          backgroundColor: "rgba(0, 128, 0, 0.6)"
+        },
+        {
+          label: "Expense",
+          data: trends.map((t) => Number(t.expense || 0)),
+          backgroundColor: "rgba(255, 0, 0, 0.6)"
+        }
+      ]
+    }),
+    [trends]
+  );
 
   if (loading) return <div className="container">Loading analytics…</div>;
 
