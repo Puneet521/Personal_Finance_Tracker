@@ -31,6 +31,11 @@ app.use('/api/transactions', transactionRoutes);
 const searchRoutes = require('./routes/searchroute.js');
 app.use('/api/search', searchRoutes);
 
+// Analytic Route
+const analyticsRoutes = require('./routes/analyticsroute.js');
+app.use('/api/analytics', analyticsRoutes);
+
+
 // Test route for backend 
 app.get('/', (req, res) => res.send('Backend running!'));
 
